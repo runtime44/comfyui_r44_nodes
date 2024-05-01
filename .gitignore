@@ -1,0 +1,6 @@
+*.lock
+*.ini
+.vscode/
+.idea/
+__pycache__
+.env
