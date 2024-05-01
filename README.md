@@ -1,7 +1,7 @@
 # Runtime44 ComfyUI Nodes
 
 <p align="center">
-    <a href="https://runtime44.com">Runtime44</a> - <a href="https://github.com/runtime44/comfyui_r44_nodes/blob/main/CHANGELOG.md">Changelog</a> - <a href="https://github.com/runtime44/comfyui_r44_nodes/issues">Bug reports</a>
+    <a href="https://runtime44.com">Runtime44</a> - <a href="https://github.com/runtime44/comfyui_r44_nodes/blob/canary/CHANGELOG.md">Changelog</a> - <a href="https://github.com/runtime44/comfyui_r44_nodes/issues">Bug reports</a>
 </p>
 
 ## Nodes
