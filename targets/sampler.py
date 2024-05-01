@@ -283,23 +283,27 @@ class Runtime44TiledMaskSampler:
                     m, (x, y, latent_tile_size), (tensor_width, tensor_height)
                 )
 
-                # Apply Mask to Latent
-                lt["noise_mask"] = m.reshape((-1, 1, m.shape[-2], m.shape[-1]))
+                # Skip tiles fully covered by mask
+                if m.abs().sum().item() == 0:
+                    l = {"samples": lt["samples"]}
+                else:
+                    # Apply Mask to Latent
+                    lt["noise_mask"] = m.reshape((-1, 1, m.shape[-2], m.shape[-1]))
 
-                pos = crop_cond(positive, (x, y, latent_tile_size))
-                neg = crop_cond(negative, (x, y, latent_tile_size))
-                (l,) = common_ksampler(
-                    model=model,
-                    seed=seed,
-                    steps=steps,
-                    cfg=cfg,
-                    sampler_name=sampler_name,
-                    scheduler=scheduler,
-                    positive=pos,
-                    negative=neg,
-                    latent=lt,
-                    denoise=denoise,
-                )
+                    pos = crop_cond(positive, (x, y, latent_tile_size))
+                    neg = crop_cond(negative, (x, y, latent_tile_size))
+                    (l,) = common_ksampler(
+                        model=model,
+                        seed=seed,
+                        steps=steps,
+                        cfg=cfg,
+                        sampler_name=sampler_name,
+                        scheduler=scheduler,
+                        positive=pos,
+                        negative=neg,
+                        latent=lt,
+                        denoise=denoise,
+                    )
                 output = composite_tensor(output, l["samples"], (x, y))
                 x += latent_tile_size
             x = 0

@@ -1,4 +1,4 @@
-from .upscaler import Runtime44Upscaler
+from .upscaler import Runtime44Upscaler, Runtime44IterativeUpscaleFactor
 from .colormatch import Runtime44ColorMatch
 from .sampler import (
     Runtime44DynamicKSampler,
@@ -16,4 +16,5 @@ __all__ = [
     "Runtime44ImageToNoise",
     "Runtime44MaskSampler",
     "Runtime44TiledMaskSampler",
+    "Runtime44IterativeUpscaleFactor",
 ]

@@ -1,6 +1,7 @@
 from comfy import model_management
 import comfy.utils
 import torch
+import sys
 
 
 class Runtime44Upscaler:
@@ -20,7 +21,7 @@ class Runtime44Upscaler:
                     {
                         "default": 4.0,
                         "min": 0.0,
-                        "max": 4.0,
+                        "max": sys.float_info.max,
                         "step": 0.05,
                     },
                 ),
@@ -82,3 +83,30 @@ class Runtime44Upscaler:
             upscale_model.cpu()
             s = torch.clamp(s.movedim(-3, -1), min=0, max=1.0)
         return (s,)
+
+class Runtime44IterativeUpscaleFactor:
+
+    @classmethod
+    def INPUT_TYPES(cls):
+        return {
+            "required": {
+                "upscale_by": ("FLOAT", {
+                    "default": 2.0, "min": 1.0, "max": sys.float_info.max, "step": 0.01
+                }),
+                "max": ("FLOAT", {
+                    "default": 2.0, "min": 1.0, "max": sys.float_info.max, "step": 0.01
+                }),
+                "index": ("INT", {
+                    "default": 0, "min": 0, "max": sys.maxsize, "step": 1
+                }),
+            }
+        }
+
+    RETURN_TYPES = ("FLOAT",)
+    RETURN_NAMES = ("factor",)
+    FUNCTION = "run"
+    CATEGORY = "image/upscaling"
+
+    def run(self, upscale_by: float, max: float, index: int):
+        formula = min(upscale_by / (max ** index), max)
+        return (0.0 if index > 0 and formula <= 1 else formula,)

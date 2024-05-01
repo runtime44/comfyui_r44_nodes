@@ -9,6 +9,7 @@ NODE_CLASS_MAPPINGS = {
     "Runtime44ImageToNoise": Runtime44ImageToNoise,
     "Runtime44MaskSampler": Runtime44MaskSampler,
     "Runtime44TiledMaskSampler": Runtime44TiledMaskSampler,
+    "Runtime44IterativeUpscaleFactor": Runtime44IterativeUpscaleFactor,
 }
 
 NODE_DISPLAY_NAME_MAPPINGS = {
@@ -20,4 +21,5 @@ NODE_DISPLAY_NAME_MAPPINGS = {
     "Runtime44ImageToNoise": "Runtime44 Image To Latent Noise",
     "Runtime44MaskSampler": "Runtime44 Mask Sampler",
     "Runtime44TiledMaskSampler": "Runtime44 Tiled Mask Sampler",
+    "Runtime44IterativeUpscaleFactor": "Runtime44 Iterative Upscale Factor",
 }

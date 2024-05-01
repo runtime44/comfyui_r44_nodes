@@ -107,7 +107,6 @@ def crop_controlnet(cond_dict: dict, region: tuple[int, int, int]):
             mode="bicubic",
             align_corners=False,
         )
-        print(hint.shape)
         controlnet.cond_hint_original = hint
         cn = cn.previous_controlnet
         controlnet.set_previous_controlnet(cn.copy() if cn is not None else None)
