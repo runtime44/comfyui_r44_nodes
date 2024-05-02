@@ -5,7 +5,12 @@ from .sampler import (
     Runtime44MaskSampler,
     Runtime44TiledMaskSampler,
 )
-from .images import Runtime44ImageOverlay, Runtime44ImageResizer, Runtime44ImageToNoise
+from .images import (
+    Runtime44ImageOverlay,
+    Runtime44ImageResizer,
+    Runtime44ImageToNoise,
+    Runtime44ImageEnhance,
+)
 
 __all__ = [
     "Runtime44Upscaler",
@@ -17,4 +22,5 @@ __all__ = [
     "Runtime44MaskSampler",
     "Runtime44TiledMaskSampler",
     "Runtime44IterativeUpscaleFactor",
+    "Runtime44ImageEnhance",
 ]
