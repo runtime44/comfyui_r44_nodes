@@ -153,3 +153,52 @@ class Runtime44ImageToNoise:
         r_image_pil = ImageEnhance.Brightness(r_image_pil).enhance(1.0)
 
         return VAEEncode().encode(vae, pixels=pil_to_tensor(r_image_pil))
+
+
+class Runtime44ImageEnhance:
+
+    RETURN_TYPES = ("IMAGE",)
+    RETURN_NAMES = ("Image",)
+    FUNCTION = "enhance"
+
+    @classmethod
+    def INPUT_TYPES(cls):
+        return {
+            "required": {
+                "image": ("IMAGE",),
+                "brightness": (
+                    "FLOAT",
+                    {"default": 1.0, "min": 0.0, "max": sys.float_info.max},
+                ),
+                "contrast": (
+                    "FLOAT",
+                    {"default": 1.0, "min": 0.0, "max": sys.float_info.max},
+                ),
+                "sharpness": (
+                    "FLOAT",
+                    {"default": 1.0, "min": 0.0, "max": sys.float_info.max},
+                ),
+            }
+        }
+
+    def enhance(
+        self,
+        image: Tensor,
+        brightness: float = 1.0,
+        contrast: float = 1.0,
+        sharpness: float = 1.0,
+    ):
+        image_pil = tensor_to_pil(image)
+
+        enhancers = (
+            ImageEnhance.Brightness,
+            ImageEnhance.Contrast,
+            ImageEnhance.Sharpness,
+        )
+        values = (brightness, contrast, sharpness)
+
+        for index, value in enumerate(values):
+            if value != 1.0:
+                image_pil = enhancers[index](image_pil).enhance(value)
+
+        return (pil_to_tensor(image_pil),)

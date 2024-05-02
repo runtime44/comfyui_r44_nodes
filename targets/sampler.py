@@ -284,9 +284,7 @@ class Runtime44TiledMaskSampler:
                 )
 
                 # Skip tiles fully covered by mask
-                if m.abs().sum().item() == 0:
-                    l = {"samples": lt["samples"]}
-                else:
+                if m.abs().sum().item() != 0:
                     # Apply Mask to Latent
                     lt["noise_mask"] = m.reshape((-1, 1, m.shape[-2], m.shape[-1]))
 
@@ -304,7 +302,7 @@ class Runtime44TiledMaskSampler:
                         latent=lt,
                         denoise=denoise,
                     )
-                output = composite_tensor(output, l["samples"], (x, y))
+                    output = composite_tensor(output, l["samples"], (x, y))
                 x += latent_tile_size
             x = 0
             y += latent_tile_size
