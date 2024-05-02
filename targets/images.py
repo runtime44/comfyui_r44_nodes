@@ -168,15 +168,30 @@ class Runtime44ImageEnhance:
                 "image": ("IMAGE",),
                 "brightness": (
                     "FLOAT",
-                    {"default": 1.0, "min": 0.0, "max": sys.float_info.max},
+                    {
+                        "default": 1.0,
+                        "min": 0.0,
+                        "max": sys.float_info.max,
+                        "step": 0.01,
+                    },
                 ),
                 "contrast": (
                     "FLOAT",
-                    {"default": 1.0, "min": 0.0, "max": sys.float_info.max},
+                    {
+                        "default": 1.0,
+                        "min": 0.0,
+                        "max": sys.float_info.max,
+                        "step": 0.01,
+                    },
                 ),
                 "sharpness": (
                     "FLOAT",
-                    {"default": 1.0, "min": 0.0, "max": sys.float_info.max},
+                    {
+                        "default": 1.0,
+                        "min": 0.0,
+                        "max": sys.float_info.max,
+                        "step": 0.01,
+                    },
                 ),
             }
         }
