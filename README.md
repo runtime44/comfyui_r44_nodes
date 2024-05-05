@@ -8,13 +8,15 @@
 | Node | Description |
 | --- | --- |
 | Upscaler | Upscale an image in pixel space using an upscale model. You can select the upscale factor as well as the tile size |
+| Iterative Upscale Factor | Determine the upcale factor depending on the index in the chain |
 | Color Match | Match the color of an image to the color of a reference |
 | Dynamic KSampler | Use multiple samplers during the diffusion process **This node is still a work in progress** |
+| Mask Sampler | Target the diffusion to a masked region (*Inspired by Impact's SEGS detailer*) |
+| Tiled Mask Sampler | Similar to the Mask Sampler, but with a latent tiling system |
 | Image Overlay | Add an image on top of another, useful for watermarking |
 | Image Resizer | Resize an image to a specific resolution, whilst keeping the aspect ratio (usually better when downscaling) |
 | Image to Noise | Convert an image into latent noise |
-| Mask Sampler | Target the diffusion to a masked region (*Inspired by Impact's SEGS detailer*) |
-| Tiled Mask Sampler | Similar to the Mask Sampler, but with a latent tiling system |
+| Image Enhance | Change the brightness, contrast, and saturation of an image in pixel space |
 
 ## Installation
 
