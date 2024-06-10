@@ -2,12 +2,13 @@ import random
 import sys
 from torch import Tensor
 from PIL import Image, ImageOps, ImageEnhance
+import torch
+from torch.cuda import is_available
 from nodes import VAEEncode
 from .utils import tensor_to_pil, pil_to_tensor
 
 
 class Runtime44ImageOverlay:
-
     RETURN_TYPES = ("IMAGE",)
     RETURN_NAMES = ("Image",)
     FUNCTION = "overlay"
@@ -53,7 +54,6 @@ class Runtime44ImageOverlay:
         y: int,
         scale: float,
     ) -> Tensor:
-
         # Convert to pil
         image_pil = tensor_to_pil(image)
         overlay_pil = tensor_to_pil(overlay)
@@ -99,7 +99,6 @@ class Runtime44ImageOverlay:
 
 
 class Runtime44ImageResizer:
-
     RETURN_TYPES = ("IMAGE",)
     RETURN_NAMES = ("Image",)
     FUNCTION = "resize"
@@ -126,7 +125,6 @@ class Runtime44ImageResizer:
 
 
 class Runtime44ImageToNoise:
-
     RETURN_TYPES = ("LATENT",)
     RETURN_NAMES = ("Latent Noise",)
     FUNCTION = "noise"
@@ -156,7 +154,6 @@ class Runtime44ImageToNoise:
 
 
 class Runtime44ImageEnhance:
-
     RETURN_TYPES = ("IMAGE",)
     RETURN_NAMES = ("Image",)
     FUNCTION = "enhance"
@@ -217,3 +214,73 @@ class Runtime44ImageEnhance:
                 image_pil = enhancers[index](image_pil).enhance(value)
 
         return (pil_to_tensor(image_pil),)
+
+
+class Runtime44FilmGrain:
+    RETURN_TYPES = ("IMAGE",)
+    RETURN_NAMES = ("Image",)
+    FUNCTION = "noise"
+
+    @classmethod
+    def INPUT_TYPES(cls):
+        return {
+            "required": {
+                "image": ("IMAGE",),
+                "mode": (["gaussian", "poisson", "speckle"],),
+                "sigmas": (
+                    "FLOAT",
+                    {"default": 0, "min": 0, "max": sys.float_info.max, "step": 0.01},
+                ),
+                "amount": (
+                    "FLOAT",
+                    {"default": 1.0, "min": 0, "max": sys.float_info.max, "step": 0.1},
+                ),
+                "seed": ("INT", {"default": 44, "min": 0, "max": sys.maxsize}),
+            }
+        }
+
+    def noise(
+        self,
+        image: Tensor,
+        mode: str,
+        sigmas: float = 0,
+        amount: float = 1.0,
+        seed: int = 44,
+    ):
+        """
+
+        Add film grain-ish to an image.
+
+        Using CuPy (for CUDA) and NumPy (for CPU/Non-CUDA device)
+
+        """
+        is_cuda = torch.cuda.is_available()
+
+        if is_cuda:
+            import cupy as np
+            from cucim.skimage.util import random_noise
+        else:
+            import numpy as np
+            from skimage.util import random_noise
+
+        random.seed(seed)
+        image_pil = tensor_to_pil(image)
+        source_im = np.asarray(image_pil) if is_cuda else image_pil
+
+        match mode:
+            case "gaussian" | "speckle":
+                kwargs = {"mean": sigmas}
+            case _:
+                kwargs = {}
+
+        kwargs = dict(kwargs, seed=seed) if is_cuda else dict(kwargs, rng=seed)
+
+        noise = random_noise(image=source_im, mode=mode, **kwargs)
+        noise = np.asnumpy(noise) if is_cuda else noise
+        noise_pil = Image.fromarray(np.uint8(noise * 255))
+
+        im = Image.blend(image_pil, noise_pil, alpha=amount)
+        del source_im
+        del noise
+
+        return (pil_to_tensor(im),)

@@ -11,6 +11,7 @@ NODE_CLASS_MAPPINGS = {
     "Runtime44TiledMaskSampler": Runtime44TiledMaskSampler,
     "Runtime44IterativeUpscaleFactor": Runtime44IterativeUpscaleFactor,
     "Runtime44ImageEnhance": Runtime44ImageEnhance,
+    "Runtime44FilmGrain": Runtime44FilmGrain,
 }
 
 NODE_DISPLAY_NAME_MAPPINGS = {
@@ -24,4 +25,5 @@ NODE_DISPLAY_NAME_MAPPINGS = {
     "Runtime44TiledMaskSampler": "Runtime44 Tiled Mask Sampler",
     "Runtime44IterativeUpscaleFactor": "Runtime44 Iterative Upscale Factor",
     "Runtime44ImageEnhance": "Runtime44 Image Enhancer",
+    "Runtime44FilmGrain": "Runtime44 Film Grain",
 }

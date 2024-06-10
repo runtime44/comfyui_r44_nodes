@@ -10,6 +10,7 @@ from .images import (
     Runtime44ImageResizer,
     Runtime44ImageToNoise,
     Runtime44ImageEnhance,
+    Runtime44FilmGrain,
 )
 
 __all__ = [
@@ -23,4 +24,5 @@ __all__ = [
     "Runtime44TiledMaskSampler",
     "Runtime44IterativeUpscaleFactor",
     "Runtime44ImageEnhance",
+    "Runtime44FilmGrain",
 ]
