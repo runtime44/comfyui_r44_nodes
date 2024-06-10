@@ -17,6 +17,7 @@
 | Image Resizer | Resize an image to a specific resolution, whilst keeping the aspect ratio (usually better when downscaling) |
 | Image to Noise | Convert an image into latent noise |
 | Image Enhance | Change the brightness, contrast, and saturation of an image in pixel space |
+| Film Grain | Add film grain to an image in pixel space |
 
 ## Installation
 
