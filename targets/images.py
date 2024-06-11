@@ -3,7 +3,6 @@ import sys
 from torch import Tensor
 from PIL import Image, ImageOps, ImageEnhance
 import torch
-from torch.cuda import is_available
 from nodes import VAEEncode
 from .utils import tensor_to_pil, pil_to_tensor
 
@@ -282,5 +281,11 @@ class Runtime44FilmGrain:
         im = Image.blend(image_pil, noise_pil, alpha=amount)
         del source_im
         del noise
+
+        if is_cuda:
+            mempool = np.get_default_memory_pool()
+            p_mempool = np.get_default_pinned_memory_pool()
+            mempool.free_all_blocks()
+            p_mempool.free_all_blocks()
 
         return (pil_to_tensor(im),)

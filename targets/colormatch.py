@@ -26,8 +26,6 @@ class Runtime44ColorMatch:
         """
         is_cuda = torch.cuda.is_available()
 
-        target = target.numpy()
-        source = source.numpy()
         if is_cuda:
             from cucim.skimage.exposure import match_histograms
             import cupy
@@ -36,8 +34,21 @@ class Runtime44ColorMatch:
             source = cupy.asarray(source)
         else:
             from skimage.exposure import match_histograms
+
+            target = target.numpy()
+            source = source.numpy()
+
         matched = match_histograms(target, source, channel_axis=-1)
-        matched = cupy.asnumpy(matched) if is_cuda else matched
         del source
         del target
-        return (torch.from_numpy(matched),)
+
+        im = cupy.asnumpy(matched) if is_cuda else matched
+        del matched
+
+        if is_cuda:
+            mempool = cupy.get_default_memory_pool()
+            p_mempool = cupy.get_default_pinned_memory_pool()
+            mempool.free_all_blocks()
+            p_mempool.free_all_blocks()
+
+        return (torch.from_numpy(im),)
