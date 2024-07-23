@@ -1,0 +1,15 @@
+[project]
+name = "comfyui_r44_nodes"
+description = "Nodes: Runtime44Upscaler, Runtime44ColorMatch, Runtime44DynamicKSampler, Runtime44ImageOverlay, Runtime44ImageResizer, Runtime44ImageToNoise, Runtime44MaskSampler, Runtime44TiledMaskSampler, Runtime44IterativeUpscaleFactor, Runtime44ImageEnhance"
+version = "1.0.0"
+license = "LICENSE"
+dependencies = ["torch", "torchvision", "Pillow", "numpy", "scikit-image", "opencv-python"]
+
+[project.urls]
+Repository = "https://github.com/runtime44/comfyui_r44_nodes"
+#  Used by Comfy Registry https://comfyregistry.org
+
+[tool.comfy]
+PublisherId = ""
+DisplayName = "comfyui_r44_nodes"
+Icon = ""
